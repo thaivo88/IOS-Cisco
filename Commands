@@ -1,0 +1,62 @@
+//> user mode
+//# enable mode (privileged mode; EXEC command)
+//(config)# global config mode
+//(config-if)# interface mode
+//(config-line)# line mode
+
+//create a vlan on a switch
+//must be in global config mode (config t = configure terminal)
+//[#] = vlan ID number
+(config)# vlan[#] 
+
+//name a vlan
+//after creating a vlan
+(config-vlan)# name [input name]
+
+//assign a switchport to a vlan
+//must be in global config mode
+//[#] = vlan ID number
+//fa for fast ethernet or gi for Gigiabit 
+//#/# is the interface port number example 0/1
+(config)# int fa#/# 
+(config-if)# switchport mode access
+(config-if)# switchport access vlan [#]
+
+//making the interface a trunk port
+//fa or gi
+(config)# interface fa#/#
+(config-if)# switchport mode trunk
+
+//display vlan information about an interface
+(config)# show int switchport
+
+//view ports in a vlan
+//[#] = vlan ID number
+# show int vlan [#]
+
+//adding a shared password to console connection
+(config)# line console 0
+(config-line)# login
+(config-line)# password [password]
+
+//adding shared password for telnet (vty)
+(config)# line vty 0 15
+(config-line)# login
+(config-line)# password [password]
+
+//adding local username and password to console connection
+(config)# line console 0
+(config-line)# login local
+(config-line)# username [username] secret [password]
+
+//adding local username and password to telnet (vty)
+(config)# line vty 0 15
+(config-line)# login local
+(config-line)# username [username] secret [password]
+
+//adding password for enable mode
+(config)# enable secret [password]
+
+//show configuration in the switch
+# show running-config
+
