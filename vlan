@@ -15,3 +15,6 @@
 (config)#int fa#/# 
 (config-if)#switchport mode access
 (config-if)#switchport access vlan [#]
+
+//display vlan information about an interface
+(config)#show int switchport
