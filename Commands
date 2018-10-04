@@ -9,6 +9,19 @@
 //[#] = vlan ID number
 (config)# vlan[#] 
 
+//create subinterface vlan on router
+//[#1] = the interface port number 
+//[#2] = vlan ID number
+//encapsulation add the 802.1Q protocol adding vlan flag ID
+(config)# interface gi[#1]/[#1].[#2]
+(config-subif)# encapsulation dot1q [#2]
+(config-subif)# ip address xx.xx.xx.xx xx.xx.xx.xx
+//or
+//native does not add an 802.1Q header when forwarding frames out this subinterface
+(config)# interface gi[#1]/[#1].[#2]
+(config-subif)# encapsulation dot1q [#2] native
+(config-subif)# ip address xx.xx.xx.xx xx.xx.xx.xx
+
 //name a vlan
 //after creating a vlan
 (config-vlan)# name [input name]
@@ -115,3 +128,6 @@
 
 //disable IOS attempt to resolve the hostname into an IP address
 (config)# no ip domain-lookup
+
+//provides a quick status of the interfaces on the router, including their IP address, Layer 2 status, and Layer 3 status.
+#show ip interface brief
