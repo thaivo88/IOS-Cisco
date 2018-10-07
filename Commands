@@ -26,7 +26,7 @@
 //after creating a vlan
 (config-vlan)# name [input name]
 
-//assign a switchport to a vlan
+//assign a switchport to a vlan on a switch
 //must be in global config mode
 //[#] = vlan ID number
 //fa for fast ethernet or gi for Gigiabit 
@@ -79,6 +79,9 @@
 //show dhcp temporarily leased IP
 # show dhcp lease
 
+//show what protocol is used
+# show ip protocol
+
 //EXEC command that list the commands currently held in the history buffer.
 # show history
 
@@ -98,7 +101,7 @@
 //lists information about each SSH Client currently connected to the switch
 # show ssh
 
-//Static IP vlan
+//Static IP vlan on a switch
 //[#] vlan ID #
 //you want to exit interface mode because the default gateway ip address is share for all ip 
 //not just the ip you created for that interface
@@ -109,7 +112,7 @@
 (config-if)# exit
 (config)# ip default-gateway xx.xx.xx.xx
 
-//Dynamic IP vlan
+//Dynamic IP vlan on a switch
 (config)# interface vlan [#]
 (config-if)# ip address dhcp
 (config-if)# no shutdown
@@ -131,3 +134,17 @@
 
 //provides a quick status of the interfaces on the router, including their IP address, Layer 2 status, and Layer 3 status.
 #show ip interface brief
+
+//configure RIP on a router (RIP max hop count: 15 | only use on small network)
+(config)# router rip
+(config-router)# version 2
+//enables RIP on all interfaces in classful network
+(config-router)# network xx.xx.xx.xx
+
+//no longer automatically advertise a route for the entire Class A|B|C network but instead advertise a route for the subnet
+(config)# router rip
+(config-router)# no auto-summary
+
+//disable the sending of RIP updates out interface Gi|fa[x]/[x]
+(config)# router rip
+(config-router)# passive-interface gi[#]/[#]
