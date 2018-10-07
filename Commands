@@ -82,6 +82,9 @@
 //show what protocol is used
 # show ip protocol
 
+//show cisco discovery protocol
+# show cdp neighbros detail
+
 //EXEC command that list the commands currently held in the history buffer.
 # show history
 
