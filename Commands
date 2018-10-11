@@ -1,3 +1,5 @@
+//r router
+//s switch
 //> user mode
 //# enable mode (privileged mode; EXEC command)
 //(config)# global config mode
@@ -7,20 +9,20 @@
 //create a vlan on a switch
 //must be in global config mode (config t = configure terminal)
 //[#] = vlan ID number
-(config)# vlan[#] 
+s(config)# vlan[#] 
 
 //create subinterface vlan on router
 //[#1] = the interface port number 
 //[#2] = vlan ID number
 //encapsulation add the 802.1Q protocol adding vlan flag ID
-(config)# interface gi[#1]/[#1].[#2]
-(config-subif)# encapsulation dot1q [#2]
-(config-subif)# ip address xx.xx.xx.xx xx.xx.xx.xx
+r(config)# interface gi[#1]/[#1].[#2]
+r(config-subif)# encapsulation dot1q [#2]
+r(config-subif)# ip address xx.xx.xx.xx xx.xx.xx.xx
 //or
 //native does not add an 802.1Q header when forwarding frames out this subinterface
-(config)# interface gi[#1]/[#1].[#2]
-(config-subif)# encapsulation dot1q [#2] native
-(config-subif)# ip address xx.xx.xx.xx xx.xx.xx.xx
+r(config)# interface gi[#1]/[#1].[#2]
+r(config-subif)# encapsulation dot1q [#2] native
+r(config-subif)# ip address xx.xx.xx.xx xx.xx.xx.xx
 
 //name a vlan
 //after creating a vlan
@@ -31,9 +33,9 @@
 //[#] = vlan ID number
 //fa for fast ethernet or gi for Gigiabit 
 //#/# is the interface port number example 0/1
-(config)# int fa#/# 
-(config-if)# switchport mode access
-(config-if)# switchport access vlan [#]
+s(config)# int fa#/# 
+s(config-if)# switchport mode access
+s(config-if)# switchport access vlan [#]
 
 //making the interface a trunk port
 //fa or gi
@@ -136,18 +138,39 @@
 (config)# no ip domain-lookup
 
 //provides a quick status of the interfaces on the router, including their IP address, Layer 2 status, and Layer 3 status.
-#show ip interface brief
+r#show ip interface brief
 
 //configure RIP on a router (RIP max hop count: 15 | only use on small network)
-(config)# router rip
-(config-router)# version 2
+r(config)# router rip
+r(config-router)# version 2
 //enables RIP on all interfaces in classful network
-(config-router)# network xx.xx.xx.xx
+r(config-router)# network xx.xx.xx.xx
 
 //no longer automatically advertise a route for the entire Class A|B|C network but instead advertise a route for the subnet
-(config)# router rip
-(config-router)# no auto-summary
+r(config)# router rip
+r(config-router)# no auto-summary
 
 //disable the sending of RIP updates out interface Gi|fa[x]/[x]
-(config)# router rip
-(config-router)# passive-interface gi[#]/[#]
+r(config)# router rip
+r(config-router)# passive-interface gi[#]/[#]
+
+//configure an IP DHCP exclude address
+r(config)# ip dhcp excluded-address xx.xx.xx.xx
+//create IP DHCP pool
+r(config)# ip dhcp pool testpool
+//configure the server to give out the default router address
+r(dhcp-config)# default-router xx.xx.xx.xx
+//configure the server to use a lease time 1 hour
+r(dhcp-config)# lease 0 1
+//config the server to give out all the available addresses
+r(dhcp-config)# network xx.xx.xx.xx xx.xx.xx.xx
+
+//configure an IP DHCP with DNS server
+r(config)# ip dhcp excluded-address xx.xx.xx.xx
+r(config)# ip dhcp pool testpool
+r(dhcp-config)# default-router xx.xx.xx.xx
+//configure the server to give out a DNS server address
+r(dhcp-config)# dns-server xx.xx.xx.xx
+//configure the server to give out a domain name testing.com
+r(dhcp-config)# domain-name testing.com
+
