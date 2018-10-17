@@ -174,3 +174,14 @@ r(dhcp-config)# dns-server xx.xx.xx.xx
 //configure the server to give out a domain name testing.com
 r(dhcp-config)# domain-name testing.com
 
+//ACL access control list
+//# 99-199 for extended ACL used for protocol blocking
+//deny protocol tcp of port 23 to any IP and submask
+r(config-t)# access-list [#] deny [protocol example tcp] any any eq [port number example 23]
+//allow all other traffic
+r(config-t)# access-list [#] permit ip any any
+//pick an interface to use the ACL
+r(config-t)# int s0/0/0
+r(config-if)# ip access-group # in
+
+
