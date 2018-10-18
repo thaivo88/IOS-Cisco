@@ -193,4 +193,14 @@ r(config)# access-list [#] permit ip any any
 r(config)# int s0/0/0
 r(config-if)# ip access-group # in
 
-
+//NAT network address translation private ip to public ip
+//choosing an interface facing the LAN the private IP
+r(config)# interface gi0/0
+//setting that interface as the private ip ie nat inside
+r(config-if)# ip nat inside
+//setting the interface as the public ip for that private ip
+r(config-if)# interface s0/0/0
+//translating the interface as public
+r(config-if)# ip nat outside
+//setting the private 10.1.0.2 ip to translate out to public ip 128.107.1.3 (the public up should be in the same subnet)
+r(config-if)# ip nat inside source static 10.1.0.2 128.107.1.3
