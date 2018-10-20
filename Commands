@@ -109,6 +109,12 @@ s(config-if)# switchport access vlan [#]
 //show access list ACL
 r# show access-list
 
+//show port security interface
+s# show port-security int gi0/1
+
+//show mac table
+s# show mac address-table
+
 //Static IP vlan on a switch
 //[#] vlan ID #
 //you want to exit interface mode because the default gateway ip address is share for all ip 
@@ -223,3 +229,42 @@ r(config)# access-list 1 permit xx.xx.xx.xx
 //setting the access list to ip nat inside which we set to interface gi0/0
 r(config)# ip nat inside source list 1 pool dynamicnatpool
 
+//disable ports = unused ports
+r(config-if)# int range f0/11-20
+r(config-if-range)# description unused ports
+r(config-if-range)# shutdown
+
+//creating a vlan with interface range
+s(config)# vlan 789
+//using the port 4-24
+s(config-vlan)# int range fa0/4-24
+s(config-if-range)# switchport mode access
+s(config-if-range)# switchport access vlan 789
+s(config-if-range)# shutdown
+
+//port security on mac address
+s(config-if)# int fa0/1
+s(config-if)# switchport mode access
+s(config-if)# switchport port-security
+s(config-if)# switchport port-security mac-address xxxx.xxxx.xxxx
+//shutdown and restarting the switch port
+s(config-if)# shutdown
+s(config-if)# no shutdown
+
+//interface converts all the dynamic secure MAC address, including those that were dynamically learned before sticky learning was enabled
+//Persistent MAC learning, also known as sticky MAC, is a port security feature that enables an interface to retain dynamically learned MAC addresses when the switch is restarted or if the interface goes down and is brought back online.
+s(config-if)# int fa0/1
+s(config-if)# switchport mode access
+s(config-if)# switchport port-security mac-address stickky
+s(config-if)# switchport port-security
+//shutdown and restarting the switch port
+s(config-if)# shutdown
+s(config-if)# no shutdown
+
+//support up to three mac addresses
+s(config)# int fa0/2
+s(config-if)# switchport mode access
+SW1(config-if)# switchport port-security
+SW1(config-if)# switchport port-security maximum 3
+//config the switch port to allow frames sent by MAC address 0200.cccc.cccc
+SW1(config-if)# switchport port-security mac-address 0200.cccc.cccc
